@@ -1,0 +1,189 @@
+
+@model List<TestAttempt>
+
+@{
+    ViewData["Title"] = "Результаты студентов";
+
+    var attempts = Model ?? new List<TestAttempt>();
+    var passedCount = attempts.Count(x => x.Passed);
+    var failedCount = attempts.Count - passedCount;
+    var averagePercent = attempts.Any()
+        ? Math.Round(attempts.Average(x => (double)x.Percent))
+        : 0;
+}
+
+<div class="results-page">
+
+    <div class="results-heading">
+        <div>
+            <span class="modern-form-eyebrow">МОНИТОРИНГ УСПЕВАЕМОСТИ</span>
+            <h1>Результаты тестирования</h1>
+            <p>История попыток студентов и результаты прохождения лекций.</p>
+        </div>
+
+        <a class="results-back-button" asp-action="Index">
+            <span>←</span> К панели
+        </a>
+    </div>
+
+    <div class="results-stats">
+
+        <div class="results-stat-card">
+            <div class="results-stat-icon results-icon-blue">▤</div>
+            <div>
+                <span>Всего попыток</span>
+                <strong>@attempts.Count</strong>
+                <small>Все результаты тестирования</small>
+            </div>
+        </div>
+
+        <div class="results-stat-card">
+            <div class="results-stat-icon results-icon-green">✓</div>
+            <div>
+                <span>Успешно пройдено</span>
+                <strong>@passedCount</strong>
+                <small>Попытки со статусом «Пройден»</small>
+            </div>
+        </div>
+
+        <div class="results-stat-card">
+            <div class="results-stat-icon results-icon-red">×</div>
+            <div>
+                <span>Не пройдено</span>
+                <strong>@failedCount</strong>
+                <small>Попытки, не достигшие порога</small>
+            </div>
+        </div>
+
+        <div class="results-stat-card">
+            <div class="results-stat-icon results-icon-purple">%</div>
+            <div>
+                <span>Средний результат</span>
+                <strong>@averagePercent%</strong>
+                <small>Средний процент правильных ответов</small>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="results-table-card">
+
+        <div class="results-table-heading">
+            <div>
+                <h2>История попыток</h2>
+                <p>Результаты прохождения тестов студентами</p>
+            </div>
+
+            <span class="results-total-badge">@attempts.Count записей</span>
+        </div>
+
+        @if (!attempts.Any())
+        {
+            <div class="results-empty">
+                <div class="results-empty-icon">▤</div>
+                <h3>Пока нет результатов</h3>
+                <p>
+                    Когда студенты начнут проходить тесты,
+                    их результаты появятся здесь.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="results-table-wrapper">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Студент</th>
+                            <th>Лекция</th>
+                            <th>Дата попытки</th>
+                            <th>Результат</th>
+                            <th>Статус</th>
+                            <th>Действие</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in attempts)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="results-student">
+                                        <div class="results-student-avatar">
+                                            @((item.Student?.FullName ?? item.Student?.UserName ?? "?").Substring(0, 1).ToUpper())
+                                        </div>
+
+                                        <div class="results-student-info">
+                                            <strong>
+                                                @(item.Student?.FullName ?? item.Student?.UserName ?? "Неизвестный студент")
+                                            </strong>
+                                            <small>Студент</small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="results-lecture-title">
+                                        @(item.Lecture?.Title ?? "Лекция удалена")
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="results-date">
+                                        @item.AttemptedAt.ToLocalTime().ToString("dd.MM.yyyy")
+                                    </span>
+                                    <small class="results-time">
+                                        @item.AttemptedAt.ToLocalTime().ToString("HH:mm")
+                                    </small>
+                                </td>
+
+                                <td>
+                                    <div class="results-score">
+                                        <strong>@item.Percent%</strong>
+                                        <span>@item.CorrectAnswers из @item.TotalQuestions</span>
+                                    </div>
+
+                                    <div class="results-progress">
+                                        <div class="results-progress-fill @(item.Passed ? "results-progress-passed" : "results-progress-failed")"
+                                             style="width: @(Math.Clamp(item.Percent, 0, 100))%">
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="results-status @(item.Passed ? "results-status-passed" : "results-status-failed")">
+                                        <span class="results-status-dot"></span>
+                                        @(item.Passed ? "Пройден" : "Не пройден")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <form asp-action="ReopenLecture" method="post">
+                                        <input type="hidden" name="studentId" value="@item.StudentId" />
+                                        <input type="hidden" name="lectureId" value="@item.LectureId" />
+
+                                        <button class="results-action-button"
+                                                type="submit"
+                                                onclick="return confirm('Отметить лекцию как пройденную для этого студента?')">
+                                            <span>↗</span>
+                                            Открыть вручную
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        @if (attempts.Any())
+        {
+            <div class="results-table-footer">
+                Отображается @attempts.Count результатов тестирования
+            </div>
+        }
+
+    </div>
+
+</div>

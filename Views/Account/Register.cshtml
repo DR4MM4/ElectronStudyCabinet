@@ -1,0 +1,138 @@
+
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="account-v2-page">
+    <div class="account-v2-container">
+
+        <section class="account-v2-info">
+            <a asp-controller="Home" asp-action="Index" class="account-v2-brand">
+                <span class="account-v2-brand-icon">E</span>
+                <span>Electron<span class="account-v2-brand-accent">Study</span></span>
+            </a>
+
+            <div class="account-v2-info-content">
+                <span class="account-v2-eyebrow">
+                    <span class="account-v2-status-dot"></span>
+                    НАЧНИ СВОЙ ПУТЬ
+                </span>
+
+                <h1>Твои новые<br />возможности.</h1>
+
+                <p>
+                    Создай аккаунт и получи доступ к образовательной платформе.
+                    Изучай лекции, проходи тесты и следи за своими результатами.
+                </p>
+
+                <div class="account-v2-benefits">
+                    <div class="account-v2-benefit">
+                        <span class="account-v2-benefit-icon">01</span>
+                        <div>
+                            <strong>Обучение в удобном формате</strong>
+                            <span>Материалы и лекции в личном кабинете</span>
+                        </div>
+                    </div>
+
+                    <div class="account-v2-benefit">
+                        <span class="account-v2-benefit-icon">02</span>
+                        <div>
+                            <strong>Контроль своих знаний</strong>
+                            <span>Тесты, результаты и прогресс обучения</span>
+                        </div>
+                    </div>
+
+                    <div class="account-v2-benefit">
+                        <span class="account-v2-benefit-icon">03</span>
+                        <div>
+                            <strong>Личное пространство</strong>
+                            <span>Твой аккаунт и твои учебные материалы</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="account-v2-info-footer">
+                ELECTRONSTUDY CABINET <span>•</span> ОБРАЗОВАТЕЛЬНАЯ ПЛАТФОРМА
+            </div>
+        </section>
+
+        <section class="account-v2-form-side">
+            <div class="account-v2-form-card">
+                <div class="account-v2-form-heading">
+                    <span class="account-v2-form-icon">✦</span>
+                    <span class="account-v2-form-label">СОЗДАНИЕ АККАУНТА</span>
+                </div>
+
+                <h2>Регистрация</h2>
+                <p class="account-v2-description">
+                    Заполни данные, чтобы создать личный кабинет студента.
+                </p>
+
+                <form asp-action="Register" method="post" class="account-v2-form">
+                    <div asp-validation-summary="ModelOnly"
+                         class="account-v2-validation"></div>
+
+                    <div class="account-v2-field">
+                        <label asp-for="FullName">ФИО</label>
+                        <input asp-for="FullName"
+                               autocomplete="name"
+                               placeholder="Например, Иван Иванов"
+                               class="account-v2-input" />
+                        <span asp-validation-for="FullName"
+                              class="account-v2-validation"></span>
+                    </div>
+
+                    <div class="account-v2-field">
+                        <label asp-for="UserName">Логин</label>
+                        <input asp-for="UserName"
+                               autocomplete="username"
+                               placeholder="Придумай логин"
+                               class="account-v2-input" />
+                        <span asp-validation-for="UserName"
+                              class="account-v2-validation"></span>
+                    </div>
+
+                    <div class="account-v2-field">
+                        <label asp-for="Password">Пароль</label>
+                        <input asp-for="Password"
+                               autocomplete="new-password"
+                               placeholder="Придумай пароль"
+                               class="account-v2-input" />
+                        <span asp-validation-for="Password"
+                              class="account-v2-validation"></span>
+                    </div>
+
+                    <div class="account-v2-field">
+                        <label asp-for="ConfirmPassword">Подтверждение пароля</label>
+                        <input asp-for="ConfirmPassword"
+                               autocomplete="new-password"
+                               placeholder="Повтори пароль"
+                               class="account-v2-input" />
+                        <span asp-validation-for="ConfirmPassword"
+                              class="account-v2-validation"></span>
+                    </div>
+
+                    <button type="submit" class="account-v2-submit">
+                        Создать аккаунт
+                        <span>→</span>
+                    </button>
+                </form>
+
+                <div class="account-v2-divider">
+                    <span>УЖЕ ЕСТЬ АККАУНТ?</span>
+                </div>
+
+                <a asp-action="Login" class="account-v2-register">
+                    Войти в личный кабинет <span>↗</span>
+                </a>
+            </div>
+
+            <a asp-controller="Home" asp-action="Index"
+               class="account-v2-back">← Вернуться на главную</a>
+        </section>
+
+    </div>
+</div>

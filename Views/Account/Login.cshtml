@@ -1,0 +1,136 @@
+
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<div class="account-v2-page">
+    <div class="account-v2-container">
+
+        <section class="account-v2-info">
+            <a asp-controller="Home" asp-action="Index" class="account-v2-brand">
+                <span class="account-v2-brand-icon">E</span>
+                <span>Electron<span class="account-v2-brand-accent">Study</span></span>
+            </a>
+
+            <div class="account-v2-info-content">
+                <span class="account-v2-eyebrow">
+                    <span class="account-v2-status-dot"></span>
+                    ТВОЁ ОБУЧЕНИЕ ПРОДОЛЖАЕТСЯ
+                </span>
+
+                <h1>С возвращением.<br />Твои знания ждут.</h1>
+
+                <p>
+                    Войди в личный кабинет, чтобы продолжить обучение,
+                    изучать лекции и отслеживать свои результаты.
+                </p>
+
+                <div class="account-v2-benefits">
+                    <div class="account-v2-benefit">
+                        <span class="account-v2-benefit-icon">01</span>
+                        <div>
+                            <strong>Все материалы в одном месте</strong>
+                            <span>Лекции, дисциплины и задания</span>
+                        </div>
+                    </div>
+
+                    <div class="account-v2-benefit">
+                        <span class="account-v2-benefit-icon">02</span>
+                        <div>
+                            <strong>Твой прогресс под контролем</strong>
+                            <span>Результаты тестов и история обучения</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="account-v2-info-footer">
+                ELECTRONSTUDY CABINET <span>•</span> ОБРАЗОВАТЕЛЬНАЯ ПЛАТФОРМА
+            </div>
+        </section>
+
+        <section class="account-v2-form-side">
+            <div class="account-v2-form-card">
+                <div class="account-v2-form-heading">
+                    <span class="account-v2-form-icon">↗</span>
+                    <span class="account-v2-form-label">ЛИЧНЫЙ КАБИНЕТ</span>
+                </div>
+
+                <h2>Вход в систему</h2>
+                <p class="account-v2-description">
+                    Введи свои данные, чтобы продолжить.
+                </p>
+
+                <form asp-action="Login" method="post" class="account-v2-form">
+                    <input asp-for="ReturnUrl" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="account-v2-validation"></div>
+
+                    <div class="account-v2-field">
+                        <label asp-for="UserName">Логин</label>
+                        <input asp-for="UserName"
+                               autocomplete="username"
+                               placeholder="Введи свой логин"
+                               class="account-v2-input" />
+                        <span asp-validation-for="UserName"
+                              class="account-v2-validation"></span>
+                    </div>
+
+                    <div class="account-v2-field">
+                        <label asp-for="Password">Пароль</label>
+                        <input asp-for="Password"
+                               autocomplete="current-password"
+                               placeholder="Введи свой пароль"
+                               class="account-v2-input" />
+                        <span asp-validation-for="Password"
+                              class="account-v2-validation"></span>
+                    </div>
+
+                    <label class="account-v2-remember">
+                        <input asp-for="RememberMe" />
+                        <span>Запомнить меня</span>
+                    </label>
+
+                    <button type="submit" class="account-v2-submit">
+                        Войти в кабинет
+                        <span>→</span>
+                    </button>
+                </form>
+
+                <div class="account-v2-divider">
+                    <span>ВПЕРВЫЕ НА ПЛАТФОРМЕ?</span>
+                </div>
+
+                <a asp-action="Register" class="account-v2-register">
+                    Создать аккаунт <span>↗</span>
+                </a>
+
+                <div class="account-v2-demo">
+                    <div class="account-v2-demo-heading">
+                        <span>ⓘ</span>
+                        Данные для демонстрации
+                    </div>
+
+                    <div class="account-v2-demo-row">
+                        <span>Преподаватель</span>
+                        <code>teacher / Teacher123!</code>
+                    </div>
+
+                    <div class="account-v2-demo-row">
+                        <span>Студент</span>
+                        <code>student / Student123!</code>
+                    </div>
+
+                    <p>Используй эти данные, если демонстрационные аккаунты настроены в проекте.</p>
+                </div>
+            </div>
+
+            <a asp-controller="Home" asp-action="Index"
+               class="account-v2-back">← Вернуться на главную</a>
+        </section>
+
+    </div>
+</div>

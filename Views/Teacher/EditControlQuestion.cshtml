@@ -1,0 +1,99 @@
+﻿
+@model QuestionEditViewModel
+
+@{
+    ViewData["Title"] = "Редактирование контрольного вопроса";
+}
+
+<div class="modern-form-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к дисциплинам
+    </a>
+
+    <div class="modern-form-layout">
+
+        <div class="modern-form-main">
+            <div class="modern-form-card">
+
+                <div class="modern-form-heading">
+                    <div class="modern-form-icon">✎</div>
+                    <div>
+                        <span class="modern-form-eyebrow">КОНТРОЛЬ ЗНАНИЙ</span>
+                        <h1>Редактирование вопроса</h1>
+                        <p>Измените формулировку вопроса или правильный ответ.</p>
+                    </div>
+                </div>
+
+                <form asp-action="EditControlQuestion" method="post">
+
+                    <input type="hidden" name="id" value="@ViewContext.RouteData.Values["id"]" />
+                    <input asp-for="LectureId" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="modern-validation-summary"></div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Text">Текст вопроса</label>
+                        <textarea asp-for="Text"
+                                  class="modern-form-textarea"
+                                  rows="4"
+                                  placeholder="Введите контрольный вопрос"></textarea>
+                        <span asp-validation-for="Text"
+                              class="modern-validation-message"></span>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="CorrectAnswer">Правильный ответ</label>
+                        <textarea asp-for="CorrectAnswer"
+                                  class="modern-form-textarea"
+                                  rows="3"
+                                  placeholder="Введите правильный ответ"></textarea>
+                        <span asp-validation-for="CorrectAnswer"
+                              class="modern-validation-message"></span>
+                    </div>
+
+                    <div class="modern-form-actions">
+                        <a class="modern-form-cancel" asp-action="Index">
+                            Отмена
+                        </a>
+
+                        <button class="modern-form-submit" type="submit">
+                            <span>✓</span>
+                            Сохранить изменения
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <aside class="modern-form-sidebar">
+            <div class="modern-form-info-card">
+                <div class="modern-info-icon">✦</div>
+                <span class="modern-form-eyebrow">СОВЕТ ПРЕПОДАВАТЕЛЮ</span>
+                <h2>Проверьте формулировку</h2>
+                <p>
+                    Вопрос должен быть понятным, а правильный ответ —
+                    соответствовать изученному материалу.
+                </p>
+                <div class="modern-info-divider"></div>
+                <div class="modern-info-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Уточните вопрос</strong>
+                        <small>Исправьте неточности в формулировке</small>
+                    </div>
+                </div>
+                <div class="modern-info-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Проверьте ответ</strong>
+                        <small>Убедитесь в правильности ответа</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</div>

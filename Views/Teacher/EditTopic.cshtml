@@ -1,0 +1,102 @@
+﻿
+@model TopicEditViewModel
+
+@{
+    ViewData["Title"] = "Редактирование темы";
+}
+
+<div class="modern-form-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к дисциплинам
+    </a>
+
+    <div class="modern-form-layout">
+
+        <div class="modern-form-main">
+            <div class="modern-form-card">
+
+                <div class="modern-form-heading">
+                    <div class="modern-form-icon">✎</div>
+                    <div>
+                        <span class="modern-form-eyebrow">УЧЕБНЫЕ МАТЕРИАЛЫ</span>
+                        <h1>Редактирование темы</h1>
+                        <p>Измените название и порядок темы в дисциплине.</p>
+                    </div>
+                </div>
+
+                <form asp-action="EditTopic" method="post">
+
+                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="CourseId" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="modern-validation-summary"></div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Title">Название темы</label>
+                        <input asp-for="Title"
+                               class="modern-form-input"
+                               placeholder="Например, Основы программирования" />
+                        <span asp-validation-for="Title"
+                              class="modern-validation-message"></span>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Order">Порядковый номер</label>
+                        <input asp-for="Order"
+                               class="modern-form-input modern-form-number"
+                               type="number"
+                               min="1" />
+                        <span asp-validation-for="Order"
+                              class="modern-validation-message"></span>
+                        <small>Определяет порядок темы внутри дисциплины.</small>
+                    </div>
+
+                    <div class="modern-form-actions">
+                        <a class="modern-form-cancel" asp-action="Index">
+                            Отмена
+                        </a>
+
+                        <button class="modern-form-submit" type="submit">
+                            <span>✓</span>
+                            Сохранить изменения
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <aside class="modern-form-sidebar">
+            <div class="modern-form-info-card">
+                <div class="modern-info-icon">✦</div>
+                <span class="modern-form-eyebrow">СТРУКТУРА КУРСА</span>
+                <h2>Организуйте обучение</h2>
+                <p>
+                    Разделяйте дисциплину на понятные темы, чтобы студентам
+                    было удобнее изучать материал последовательно.
+                </p>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-info-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Уточните название</strong>
+                        <small>Используйте короткую и понятную формулировку</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Проверьте порядок</strong>
+                        <small>Расположите темы в нужной последовательности</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</div>

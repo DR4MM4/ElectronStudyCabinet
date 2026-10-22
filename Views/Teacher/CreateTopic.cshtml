@@ -1,0 +1,124 @@
+
+@model TopicEditViewModel
+
+@{
+    ViewData["Title"] = "Новая тема";
+}
+
+<div class="modern-form-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к дисциплинам
+    </a>
+
+    <div class="modern-form-layout">
+
+        <div class="modern-form-main">
+            <div class="modern-form-card">
+
+                <div class="modern-form-heading">
+                    <div class="modern-form-icon">▤</div>
+                    <div>
+                        <span class="modern-form-eyebrow">СТРУКТУРА ДИСЦИПЛИНЫ</span>
+                        <h1>Добавить тему</h1>
+                        <p>Создайте раздел, в котором будут располагаться учебные лекции.</p>
+                    </div>
+                </div>
+
+                <form asp-action="CreateTopic" method="post">
+
+                    <input asp-for="CourseId" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly" class="modern-validation-summary"></div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Title">Название темы</label>
+
+                        <input asp-for="Title"
+                               class="modern-form-input"
+                               placeholder="Например, Основы тестирования ПО" />
+
+                        <span asp-validation-for="Title" class="modern-validation-message"></span>
+
+                        <small>
+                            Выберите название, которое отражает содержание раздела.
+                        </small>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Order">Порядковый номер темы</label>
+
+                        <input asp-for="Order"
+                               class="modern-form-input"
+                               type="number"
+                               min="1"
+                               placeholder="1" />
+
+                        <span asp-validation-for="Order" class="modern-validation-message"></span>
+
+                        <small>
+                            Номер определяет порядок отображения темы в дисциплине.
+                        </small>
+                    </div>
+
+                    <div class="modern-form-actions">
+                        <a class="modern-form-cancel" asp-action="Index">
+                            Отмена
+                        </a>
+
+                        <button class="modern-form-submit" type="submit">
+                            <span>✓</span>
+                            Сохранить тему
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <aside class="modern-form-sidebar">
+            <div class="modern-form-info-card">
+
+                <div class="modern-info-icon">✦</div>
+
+                <span class="modern-form-eyebrow">КАК ЭТО РАБОТАЕТ</span>
+
+                <h2>Организуйте обучение</h2>
+
+                <p>
+                    Темы помогают разделить дисциплину на логические разделы
+                    и упростить изучение материала студентами.
+                </p>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-info-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Создайте тему</strong>
+                        <small>Укажите название и номер</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Добавьте лекции</strong>
+                        <small>Разместите теоретический материал</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>03</span>
+                    <div>
+                        <strong>Настройте проверку</strong>
+                        <small>Добавьте вопросы и тесты</small>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+</div>

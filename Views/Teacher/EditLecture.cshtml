@@ -1,0 +1,169 @@
+﻿
+@model LectureEditViewModel
+
+@{
+    ViewData["Title"] = "Редактирование лекции";
+}
+
+<div class="modern-form-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к дисциплинам
+    </a>
+
+    <div class="modern-form-layout">
+
+        <div class="modern-form-main">
+            <div class="modern-form-card">
+
+                <div class="modern-form-heading">
+                    <div class="modern-form-icon">✎</div>
+
+                    <div>
+                        <span class="modern-form-eyebrow">УЧЕБНЫЕ МАТЕРИАЛЫ</span>
+                        <h1>Редактирование лекции</h1>
+                        <p>Измените название, содержание или прикреплённый материал.</p>
+                    </div>
+                </div>
+
+                <form asp-action="EditLecture"
+                      method="post"
+                      enctype="multipart/form-data">
+
+                    <input asp-for="Id" type="hidden" />
+                    <input asp-for="TopicId" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="modern-validation-summary"></div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Title">Название лекции</label>
+                        <input asp-for="Title"
+                               class="modern-form-input"
+                               placeholder="Название лекции" />
+                        <span asp-validation-for="Title"
+                              class="modern-validation-message"></span>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Description">Краткое описание</label>
+                        <textarea asp-for="Description"
+                                  class="modern-form-textarea"
+                                  rows="3"
+                                  placeholder="Краткое описание лекции"></textarea>
+                        <span asp-validation-for="Description"
+                              class="modern-validation-message"></span>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Content">Теоретический материал</label>
+                        <textarea asp-for="Content"
+                                  class="modern-form-textarea modern-form-content"
+                                  rows="10"
+                                  placeholder="Теоретический материал лекции"></textarea>
+                        <span asp-validation-for="Content"
+                              class="modern-validation-message"></span>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Order">Порядковый номер</label>
+                        <input asp-for="Order"
+                               class="modern-form-input modern-form-number"
+                               type="number"
+                               min="1" />
+                        <span asp-validation-for="Order"
+                              class="modern-validation-message"></span>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Material">Заменить файл лекции</label>
+
+                        <div class="modern-file-area">
+                            <div class="modern-file-icon">↑</div>
+                            <div class="modern-file-description">
+                                <strong>Выберите новый файл</strong>
+                                <span>PDF, DOC, DOCX или TXT</span>
+                            </div>
+                            <input asp-for="Material"
+                                   class="modern-form-file"
+                                   type="file"
+                                   accept=".pdf,.doc,.docx,.txt" />
+                        </div>
+
+                        <span asp-validation-for="Material"
+                              class="modern-validation-message"></span>
+
+                        <small>
+                            Если новый файл не выбран, текущий файл лекции останется без изменений.
+                        </small>
+                    </div>
+
+                    <div class="modern-form-actions">
+                        <a class="modern-form-cancel" asp-action="Index">
+                            Отмена
+                        </a>
+
+                        <button class="modern-form-submit" type="submit">
+                            <span>✓</span>
+                            Сохранить изменения
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <aside class="modern-form-sidebar">
+            <div class="modern-form-info-card">
+
+                <div class="modern-info-icon">✦</div>
+
+                <span class="modern-form-eyebrow">РЕДАКТИРОВАНИЕ</span>
+
+                <h2>Обновите материал</h2>
+
+                <p>
+                    Внесённые изменения сохранятся в существующей лекции.
+                    Создавать новую лекцию не потребуется.
+                </p>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-info-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Проверьте содержание</strong>
+                        <small>Уточните название и теорию</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Настройте порядок</strong>
+                        <small>Укажите номер лекции в теме</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>03</span>
+                    <div>
+                        <strong>Сохраните изменения</strong>
+                        <small>Новый файл добавлять необязательно</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-form-tip">
+                    <span>💡</span>
+                    <p>
+                        После сохранения вы вернётесь в кабинет преподавателя.
+                    </p>
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+</div>

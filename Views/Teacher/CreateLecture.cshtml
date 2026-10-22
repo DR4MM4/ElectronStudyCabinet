@@ -1,0 +1,186 @@
+
+@model LectureEditViewModel
+
+@{
+    ViewData["Title"] = "Новая лекция";
+}
+
+<div class="modern-form-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к дисциплинам
+    </a>
+
+    <div class="modern-form-layout">
+
+        <div class="modern-form-main">
+            <div class="modern-form-card">
+
+                <div class="modern-form-heading">
+                    <div class="modern-form-icon">▤</div>
+
+                    <div>
+                        <span class="modern-form-eyebrow">УЧЕБНЫЕ МАТЕРИАЛЫ</span>
+                        <h1>Добавить лекцию</h1>
+                        <p>Подготовьте теоретический материал и прикрепите файл для студентов.</p>
+                    </div>
+                </div>
+
+                <form asp-action="CreateLecture"
+                      method="post"
+                      enctype="multipart/form-data">
+
+                    <input asp-for="TopicId" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="modern-validation-summary"></div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Title">Название лекции</label>
+
+                        <input asp-for="Title"
+                               class="modern-form-input"
+                               placeholder="Например, Введение в программирование" />
+
+                        <span asp-validation-for="Title"
+                              class="modern-validation-message"></span>
+
+                        <small>Укажите короткое и понятное название материала.</small>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Description">Краткое описание</label>
+
+                        <textarea asp-for="Description"
+                                  class="modern-form-textarea"
+                                  rows="3"
+                                  placeholder="О чём эта лекция и что студент узнает после изучения?"></textarea>
+
+                        <span asp-validation-for="Description"
+                              class="modern-validation-message"></span>
+
+                        <small>Описание поможет студентам быстрее понять содержание лекции.</small>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Content">Теоретический материал</label>
+
+                        <textarea asp-for="Content"
+                                  class="modern-form-textarea modern-form-content"
+                                  rows="10"
+                                  placeholder="Введите теоретический материал лекции..."></textarea>
+
+                        <span asp-validation-for="Content"
+                              class="modern-validation-message"></span>
+
+                        <small>Можно добавить определения, объяснения, примеры и основные тезисы.</small>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Order">Порядковый номер</label>
+
+                        <input asp-for="Order"
+                               class="modern-form-input modern-form-number"
+                               type="number"
+                               min="1"
+                               placeholder="1" />
+
+                        <span asp-validation-for="Order"
+                              class="modern-validation-message"></span>
+
+                        <small>Определяет порядок лекции внутри темы.</small>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Material">Дополнительный файл</label>
+
+                        <div class="modern-file-area">
+                            <div class="modern-file-icon">↑</div>
+
+                            <div class="modern-file-description">
+                                <strong>Прикрепите учебный материал</strong>
+                                <span>PDF, DOC, DOCX или TXT</span>
+                            </div>
+
+                            <input asp-for="Material"
+                                   class="modern-form-file"
+                                   type="file"
+                                   accept=".pdf,.doc,.docx,.txt" />
+                        </div>
+
+                        <span asp-validation-for="Material"
+                              class="modern-validation-message"></span>
+
+                        <small>Поле необязательное. Можно добавить документ с дополнительными материалами.</small>
+                    </div>
+
+                    <div class="modern-form-actions">
+                        <a class="modern-form-cancel" asp-action="Index">
+                            Отмена
+                        </a>
+
+                        <button class="modern-form-submit" type="submit">
+                            <span>✓</span>
+                            Сохранить лекцию
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <aside class="modern-form-sidebar">
+            <div class="modern-form-info-card">
+
+                <div class="modern-info-icon">✦</div>
+
+                <span class="modern-form-eyebrow">СОВЕТЫ ПРЕПОДАВАТЕЛЮ</span>
+
+                <h2>Создайте полезную лекцию</h2>
+
+                <p>
+                    Хорошо структурированный материал помогает студентам
+                    усваивать информацию и готовиться к проверочным заданиям.
+                </p>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-info-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Укажите тему</strong>
+                        <small>Выберите понятное название и описание</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Добавьте теорию</strong>
+                        <small>Разбейте материал на логические части</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>03</span>
+                    <div>
+                        <strong>Прикрепите файл</strong>
+                        <small>Добавьте документ, если это необходимо</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-form-tip">
+                    <span>💡</span>
+                    <p>
+                        После создания лекции можно добавить контрольные вопросы
+                        и тесты, если это предусмотрено вашим проектом.
+                    </p>
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+</div>

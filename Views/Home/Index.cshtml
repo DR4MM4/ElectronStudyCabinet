@@ -1,0 +1,394 @@
+
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<div class="home-v2">
+
+    <!-- Первый экран -->
+    <section class="home-v2-hero">
+        <div class="home-v2-hero-content">
+            <div class="home-v2-label">
+                <span class="home-v2-label-dot"></span>
+                ЦИФРОВАЯ УЧЕБНАЯ СРЕДА
+            </div>
+
+            <h1>
+                Учись в своём<br />
+                ритме. <span>Расти<br class="home-v2-mobile-break" /> каждый день.</span>
+            </h1>
+
+            <p class="home-v2-hero-description">
+                Лекции, учебные материалы и тесты — в одном пространстве.
+                Изучайте темы последовательно, проверяйте знания и наблюдайте
+                за своим прогрессом.
+            </p>
+
+            <div class="home-v2-actions">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    if (User.IsInRole("Teacher"))
+                    {
+                        <a class="home-v2-button home-v2-button-primary"
+                           asp-controller="Teacher"
+                           asp-action="Index">
+                            Открыть панель преподавателя
+                            <span>→</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="home-v2-button home-v2-button-primary"
+                           asp-controller="Student"
+                           asp-action="Index">
+                            Перейти к обучению
+                            <span>→</span>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a class="home-v2-button home-v2-button-primary"
+                       asp-controller="Account"
+                       asp-action="Register">
+                        Начать обучение
+                        <span>→</span>
+                    </a>
+
+                    <a class="home-v2-button home-v2-button-secondary"
+                       asp-controller="Account"
+                       asp-action="Login">
+                        Войти в кабинет
+                    </a>
+                }
+            </div>
+
+            <div class="home-v2-trust-note">
+                <span class="home-v2-trust-icon">✓</span>
+                <span>Ваш учебный маршрут — в одном личном кабинете</span>
+            </div>
+
+            <div class="home-v2-mini-stats">
+                <div>
+                    <strong>01</strong>
+                    <span>Изучай теорию</span>
+                </div>
+                <div class="home-v2-mini-divider"></div>
+                <div>
+                    <strong>02</strong>
+                    <span>Проверяй знания</span>
+                </div>
+                <div class="home-v2-mini-divider"></div>
+                <div>
+                    <strong>03</strong>
+                    <span>Достигай целей</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Декоративная иллюстрация учебной платформы -->
+        <div class="home-v2-visual" aria-hidden="true">
+            <div class="home-v2-visual-glow"></div>
+            <div class="home-v2-orbit home-v2-orbit-large"></div>
+            <div class="home-v2-orbit home-v2-orbit-small"></div>
+
+            <div class="home-v2-floating home-v2-floating-top">
+                <span class="home-v2-floating-icon home-v2-floating-green">✓</span>
+                <span>
+                    <strong>Материалы доступны</strong>
+                    <small>Всё в одном месте</small>
+                </span>
+            </div>
+
+            <div class="home-v2-learning-window">
+                <div class="home-v2-window-header">
+                    <div class="home-v2-window-brand">
+                        <span class="home-v2-brand-icon">✦</span>
+                        <span>Study Space</span>
+                    </div>
+                    <div class="home-v2-window-dots">
+                        <i></i><i></i><i></i>
+                    </div>
+                </div>
+
+                <div class="home-v2-window-body">
+                    <div class="home-v2-window-overline">МОЁ ОБУЧЕНИЕ</div>
+                    <h3>Основы тестирования</h3>
+                    <p>Тема 01 · Введение в дисциплину</p>
+
+                    <div class="home-v2-window-progress-heading">
+                        <span>Пример учебного прогресса</span>
+                        <strong>68%</strong>
+                    </div>
+
+                    <div class="home-v2-window-progress">
+                        <div></div>
+                    </div>
+
+                    <div class="home-v2-window-task home-v2-task-complete">
+                        <div class="home-v2-task-icon">✓</div>
+                        <div class="home-v2-task-text">
+                            <strong>Теоретический материал</strong>
+                            <span>Можно повторить в любой момент</span>
+                        </div>
+                        <span class="home-v2-task-badge">Готово</span>
+                    </div>
+
+                    <div class="home-v2-window-task home-v2-task-complete">
+                        <div class="home-v2-task-icon">✓</div>
+                        <div class="home-v2-task-text">
+                            <strong>Контрольные вопросы</strong>
+                            <span>Первый этап обучения</span>
+                        </div>
+                        <span class="home-v2-task-badge">Готово</span>
+                    </div>
+
+                    <div class="home-v2-window-task">
+                        <div class="home-v2-task-icon home-v2-task-icon-pending">03</div>
+                        <div class="home-v2-task-text">
+                            <strong>Проверочный тест</strong>
+                            <span>Проверь усвоенные знания</span>
+                        </div>
+                        <span class="home-v2-task-badge home-v2-task-badge-pending">Далее</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-v2-floating home-v2-floating-bottom">
+                <span class="home-v2-floating-icon home-v2-floating-purple">↗</span>
+                <span>
+                    <strong>Шаг за шагом</strong>
+                    <small>К новым знаниям</small>
+                </span>
+            </div>
+
+            <div class="home-v2-decor-star home-v2-star-one">✦</div>
+            <div class="home-v2-decor-star home-v2-star-two">✧</div>
+        </div>
+    </section>
+
+    <!-- Полоса преимуществ -->
+    <section class="home-v2-benefits">
+        <div class="home-v2-benefit">
+            <span class="home-v2-benefit-icon home-v2-benefit-purple">▤</span>
+            <div>
+                <strong>Всё собрано вместе</strong>
+                <span>Материалы и лекции</span>
+            </div>
+        </div>
+
+        <div class="home-v2-benefit-separator"></div>
+
+        <div class="home-v2-benefit">
+            <span class="home-v2-benefit-icon home-v2-benefit-green">✓</span>
+            <div>
+                <strong>Понятные результаты</strong>
+                <span>Проверка знаний</span>
+            </div>
+        </div>
+
+        <div class="home-v2-benefit-separator"></div>
+
+        <div class="home-v2-benefit">
+            <span class="home-v2-benefit-icon home-v2-benefit-orange">↗</span>
+            <div>
+                <strong>Последовательный путь</strong>
+                <span>От темы к теме</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Возможности платформы -->
+    <section class="home-v2-features" id="home-features">
+        <div class="home-v2-section-heading">
+            <span class="home-v2-section-label">ВОЗМОЖНОСТИ ПЛАТФОРМЫ</span>
+            <h2>Всё необходимое<br />для уверенного обучения<span>.</span></h2>
+            <p>
+                Простая структура помогает сосредоточиться на главном:
+                изучении материалов и закреплении знаний.
+            </p>
+        </div>
+
+        <div class="home-v2-feature-grid">
+            <article class="home-v2-feature-card">
+                <div class="home-v2-feature-card-top">
+                    <div class="home-v2-feature-icon home-v2-feature-icon-purple">▤</div>
+                    <span class="home-v2-feature-number">01</span>
+                </div>
+                <h3>Теория под рукой</h3>
+                <p>
+                    Изучайте лекции, знакомьтесь с описаниями тем и открывайте
+                    прикреплённые учебные файлы.
+                </p>
+                <div class="home-v2-feature-bottom">
+                    <span>Учебные материалы</span>
+                    <span class="home-v2-feature-arrow">↗</span>
+                </div>
+            </article>
+
+            <article class="home-v2-feature-card home-v2-feature-card-highlight">
+                <div class="home-v2-feature-card-top">
+                    <div class="home-v2-feature-icon home-v2-feature-icon-green">✓</div>
+                    <span class="home-v2-feature-number">02</span>
+                </div>
+                <h3>Знания на практике</h3>
+                <p>
+                    Отвечайте на контрольные вопросы, проходите тесты
+                    и узнавайте, насколько хорошо усвоена тема.
+                </p>
+                <div class="home-v2-feature-bottom">
+                    <span>Проверка знаний</span>
+                    <span class="home-v2-feature-arrow">↗</span>
+                </div>
+            </article>
+
+            <article class="home-v2-feature-card">
+                <div class="home-v2-feature-card-top">
+                    <div class="home-v2-feature-icon home-v2-feature-icon-orange">↗</div>
+                    <span class="home-v2-feature-number">03</span>
+                </div>
+                <h3>Понятный прогресс</h3>
+                <p>
+                    Двигайтесь последовательно: выполнение обязательных этапов
+                    помогает подготовиться к следующей лекции.
+                </p>
+                <div class="home-v2-feature-bottom">
+                    <span>Путь обучения</span>
+                    <span class="home-v2-feature-arrow">↗</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Как проходит обучение -->
+    <section class="home-v2-steps-section">
+        <div class="home-v2-steps-intro">
+            <span class="home-v2-section-label">ВСЁ ПРОСТО</span>
+            <h2>Три шага<br />к новым знаниям</h2>
+            <p>
+                Учебный процесс организован так, чтобы вы могли двигаться
+                от изучения теории к проверке знаний.
+            </p>
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                if (User.IsInRole("Teacher"))
+                {
+                    <a class="home-v2-text-link"
+                       asp-controller="Teacher"
+                       asp-action="Index">
+                        Перейти к панели <span>→</span>
+                    </a>
+                }
+                else
+                {
+                    <a class="home-v2-text-link"
+                       asp-controller="Student"
+                       asp-action="Index">
+                        Продолжить обучение <span>→</span>
+                    </a>
+                }
+            }
+            else
+            {
+                <a class="home-v2-text-link"
+                   asp-controller="Account"
+                   asp-action="Register">
+                    Создать аккаунт <span>→</span>
+                </a>
+            }
+        </div>
+
+        <div class="home-v2-steps-list">
+            <article class="home-v2-step">
+                <div class="home-v2-step-number">01</div>
+                <div class="home-v2-step-content">
+                    <h3>Изучайте материал</h3>
+                    <p>Открывайте лекции и внимательно знакомьтесь с теорией.</p>
+                </div>
+                <div class="home-v2-step-symbol">▤</div>
+            </article>
+
+            <article class="home-v2-step">
+                <div class="home-v2-step-number">02</div>
+                <div class="home-v2-step-content">
+                    <h3>Закрепляйте знания</h3>
+                    <p>Отвечайте на контрольные вопросы и выполняйте тесты.</p>
+                </div>
+                <div class="home-v2-step-symbol">✓</div>
+            </article>
+
+            <article class="home-v2-step">
+                <div class="home-v2-step-number">03</div>
+                <div class="home-v2-step-content">
+                    <h3>Двигайтесь дальше</h3>
+                    <p>Выполняйте условия лекции и переходите к новым темам.</p>
+                </div>
+                <div class="home-v2-step-symbol">↗</div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Финальный призыв -->
+    <section class="home-v2-cta">
+        <div class="home-v2-cta-decoration home-v2-cta-decoration-one"></div>
+        <div class="home-v2-cta-decoration home-v2-cta-decoration-two"></div>
+
+        <div class="home-v2-cta-content">
+            <span class="home-v2-cta-label">ТВОЙ СЛЕДУЮЩИЙ ШАГ</span>
+            <h2>Готов открыть<br />новые возможности?</h2>
+            <p>
+                Начни с одной лекции. Продолжай с интересом.
+                Пусть каждый новый день приносит знания.
+            </p>
+
+            <div class="home-v2-actions">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    if (User.IsInRole("Teacher"))
+                    {
+                        <a class="home-v2-button home-v2-button-cta"
+                           asp-controller="Teacher"
+                           asp-action="Index">
+                            Открыть панель <span>→</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="home-v2-button home-v2-button-cta"
+                           asp-controller="Student"
+                           asp-action="Index">
+                            Продолжить обучение <span>→</span>
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a class="home-v2-button home-v2-button-cta"
+                       asp-controller="Account"
+                       asp-action="Register">
+                        Присоединиться <span>→</span>
+                    </a>
+                    <a class="home-v2-cta-login"
+                       asp-controller="Account"
+                       asp-action="Login">
+                        Уже есть аккаунт? Войти
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="home-v2-cta-art" aria-hidden="true">
+            <div class="home-v2-cta-art-circle">
+                <span>✦</span>
+            </div>
+            <div class="home-v2-cta-art-caption">УЧИСЬ · РАСТИ · ДОСТИГАЙ</div>
+        </div>
+    </section>
+
+    <div class="home-v2-footer-note">
+        <span class="home-v2-footer-star">✦</span>
+        <span>Большие достижения начинаются с маленьких шагов.</span>
+    </div>
+
+</div>

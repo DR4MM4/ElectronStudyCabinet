@@ -1,0 +1,358 @@
+
+@model List<Course>
+
+@{
+    ViewData["Title"] = "Мои дисциплины";
+
+    var completed = (ViewBag.Progress as List<int>) ?? new List<int>();
+    var total = (int)(ViewBag.TotalLectures ?? 0);
+
+    var percent = total == 0
+        ? 0
+        : Math.Min(100, (int)Math.Round(completed.Count * 100.0 / total));
+
+    var courseNumber = 0;
+}
+
+<div class="student-home">
+
+    <!-- Приветственный блок -->
+    <section class="student-home-hero">
+        <div class="student-home-hero-content">
+            <span class="student-home-eyebrow">
+                <span class="student-home-eyebrow-dot"></span>
+                ВАШЕ ОБРАЗОВАНИЕ — В ВАШИХ РУКАХ
+            </span>
+
+            <h1>Знания сегодня.<br /><span>Возможности завтра.</span></h1>
+
+            <p>
+                Добро пожаловать в учебный кабинет! Продолжайте изучать материалы,
+                проходите тесты и двигайтесь к своим целям в удобном темпе.
+            </p>
+
+            <div class="student-home-hero-actions">
+                
+@if (ViewBag.ContinueLectureId != null)
+{
+    <a asp-action="Lecture"
+       asp-route-id="@ViewBag.ContinueLectureId"
+       class="student-home-primary-btn">
+        Продолжить обучение <span>→</span>
+    </a>
+}
+else
+{
+    <a href="#student-courses" class="student-home-primary-btn">
+        Все лекции пройдены <span>✓</span>
+    </a>
+}
+
+
+                <div class="student-home-hero-caption">
+                    <span class="student-home-caption-icon">✓</span>
+                    <span>Ваш прогресс сохраняется</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="student-home-hero-art" aria-hidden="true">
+            <div class="student-home-art-glow"></div>
+            <div class="student-home-art-orbit student-home-art-orbit-one"></div>
+            <div class="student-home-art-orbit student-home-art-orbit-two"></div>
+
+            <div class="student-home-art-card">
+                <div class="student-home-art-card-top">
+                    <span class="student-home-art-book">▤</span>
+                    <span class="student-home-art-check">✓</span>
+                </div>
+
+                <div class="student-home-art-line student-home-art-line-long"></div>
+                <div class="student-home-art-line student-home-art-line-medium"></div>
+                <div class="student-home-art-line student-home-art-line-short"></div>
+
+                <div class="student-home-art-card-bottom">
+                    <span>МОЙ ПРОГРЕСС</span>
+                    <strong>@percent%</strong>
+                </div>
+
+                <div class="student-home-art-mini-track">
+                    <div style="width: @percent%"></div>
+                </div>
+            </div>
+
+            <div class="student-home-float student-home-float-top">
+                <span>✦</span>
+                Учись каждый день
+            </div>
+
+            <div class="student-home-float student-home-float-bottom">
+                <span>✓</span>
+                <div>
+                    <strong>@completed.Count лекций</strong>
+                    <small>Уже завершено</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Краткая статистика -->
+    <section class="student-home-stats">
+        <article class="student-home-stat">
+            <div class="student-home-stat-icon student-home-stat-purple">▤</div>
+            <div class="student-home-stat-content">
+                <span>Мои дисциплины</span>
+                <strong>@Model.Count</strong>
+                <small>Доступно для изучения</small>
+            </div>
+            <div class="student-home-stat-decoration">01</div>
+        </article>
+
+        <article class="student-home-stat">
+            <div class="student-home-stat-icon student-home-stat-green">✓</div>
+            <div class="student-home-stat-content">
+                <span>Завершено лекций</span>
+                <strong>@completed.Count</strong>
+                <small>Успешно пройдено</small>
+            </div>
+            <div class="student-home-stat-decoration">02</div>
+        </article>
+
+        <article class="student-home-stat">
+            <div class="student-home-stat-icon student-home-stat-orange">↗</div>
+            <div class="student-home-stat-content">
+                <span>Общий прогресс</span>
+                <strong>@percent<span class="student-home-percent-sign">%</span></strong>
+                <small>От общего количества лекций</small>
+            </div>
+            <div class="student-home-stat-decoration">03</div>
+        </article>
+    </section>
+
+    <!-- Общий прогресс -->
+    <section class="student-home-progress">
+        <div class="student-home-progress-header">
+            <div class="student-home-progress-heading">
+                <div class="student-home-section-icon">◈</div>
+                <div>
+                    <span class="student-home-section-label">ВАШ ПУТЬ</span>
+                    <h2>Каждый шаг имеет значение</h2>
+                    <p>Продолжайте обучение — результат складывается из маленьких побед.</p>
+                </div>
+            </div>
+
+            <div class="student-home-progress-badge">
+                <strong>@percent%</strong>
+                <span>выполнено</span>
+            </div>
+        </div>
+
+        <div class="student-home-progress-track">
+            <div class="student-home-progress-fill" style="width: @percent%">
+                <span></span>
+            </div>
+        </div>
+
+        <div class="student-home-progress-footer">
+            <div>
+                <span class="student-home-progress-dot"></span>
+                Завершено <strong>@completed.Count</strong> из <strong>@total</strong> лекций
+            </div>
+            <span>Осталось: <strong>@Math.Max(0, total - completed.Count)</strong></span>
+        </div>
+    </section>
+
+    <!-- Список дисциплин -->
+    <section class="student-home-courses" id="student-courses">
+        <div class="student-home-section-heading">
+            <div>
+                <span class="student-home-section-label">ВАША УЧЕБНАЯ ПРОГРАММА</span>
+                <h2>Мои дисциплины<span class="student-home-heading-period">.</span></h2>
+                <p>Выберите дисциплину, чтобы открыть её программу и продолжить обучение.</p>
+            </div>
+
+            <div class="student-home-course-count">
+                <strong>@Model.Count.ToString("00")</strong>
+                <span>дисциплин</span>
+            </div>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="student-home-empty">
+                <div class="student-home-empty-art">
+                    <span>▤</span>
+                    <i></i>
+                </div>
+                <h3>Здесь скоро появятся ваши дисциплины</h3>
+                <p>
+                    Преподаватель ещё не добавил учебные материалы.
+                    Загляните сюда позже — новые дисциплины появятся в этом разделе.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="student-home-course-grid">
+                @foreach (var course in Model)
+                {
+                    courseNumber++;
+
+                    var lectures = (course.Topics ?? new List<Topic>())
+                        .OrderBy(t => t.Order)
+                        .SelectMany(t => t.Lectures.OrderBy(l => l.Order))
+                        .ToList();
+
+                    var done = lectures.Count(l => completed.Contains(l.Id));
+
+                    var coursePercent = lectures.Count == 0
+                        ? 0
+                        : Math.Min(100, (int)Math.Round(done * 100.0 / lectures.Count));
+
+                        
+var courseStatus = lectures.Count == 0
+    ? "Нет лекций"
+    : done == 0
+        ? "Не начата"
+        : done == lectures.Count
+            ? "Завершена"
+            : "В процессе";
+
+var courseStatusClass = lectures.Count == 0
+    ? "status-empty"
+    : done == 0
+        ? "status-not-started"
+        : done == lectures.Count
+            ? "status-completed"
+            : "status-in-progress";
+
+
+                    <article class="student-home-course-card">
+                        <div class="student-home-course-top">
+                            <div class="student-home-course-symbol">
+                                <span>▤</span>
+                            </div>
+
+                            <div class="student-home-course-index">
+                                ДИСЦИПЛИНА @courseNumber.ToString("00")
+                            </div>
+
+                            <div class="student-home-course-percent">
+                                @coursePercent%
+                            </div>
+                        </div>
+
+                        <h3>@course.Title</h3>
+
+                        <p class="student-home-course-description">
+                            @(string.IsNullOrWhiteSpace(course.Description)
+                                ? "Учебные материалы, лекции и проверка знаний по дисциплине."
+                                : course.Description)
+                        </p>
+
+                        <div class="student-home-course-progress">
+                            <div class="student-home-course-progress-labels">
+                                <span>Прогресс изучения</span>
+                                <strong>@done <span>/ @lectures.Count</span></strong>
+                            </div>
+
+                            <div class="student-home-course-track">
+                                <div style="width: @coursePercent%"></div>
+                            </div>
+                        </div>
+
+                        <div class="student-home-program-heading">
+                            <div>
+                                <span class="student-home-program-icon">☷</span>
+                                <strong>Учебная программа</strong>
+                            </div>
+                            <span class="student-home-program-count">
+                                @lectures.Count лекц.
+                            </span>
+                        </div>
+
+                        @if (!lectures.Any())
+                        {
+                            <div class="student-home-no-lectures">
+                                <span>◎</span>
+                                <p>Лекции пока не добавлены.</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="student-home-lecture-list">
+                                @for (var i = 0; i < lectures.Count; i++)
+                                {
+                                    var lecture = lectures[i];
+                                    var isCompleted = completed.Contains(lecture.Id);
+
+                                    var unlocked = i == 0
+                                        || completed.Contains(lectures[i - 1].Id);
+
+                                    <div class="student-home-lecture @(isCompleted ? "home-lecture-done" : unlocked ? "home-lecture-open" : "home-lecture-locked")">
+                                        <div class="student-home-lecture-status">
+                                            @if (isCompleted)
+                                            {
+                                                <span>✓</span>
+                                            }
+                                            else if (unlocked)
+                                            {
+                                                <span>→</span>
+                                            }
+                                            else
+                                            {
+                                                <span>•</span>
+                                            }
+                                        </div>
+
+                                        <div class="student-home-lecture-details">
+                                            <strong>@lecture.Title</strong>
+                                            <span>
+                                                @(isCompleted
+                                                    ? "Лекция завершена"
+                                                    : unlocked
+                                                        ? "Готова к изучению"
+                                                        : "Завершите предыдущую лекцию")
+                                            </span>
+                                        </div>
+
+                                        @if (unlocked)
+                                        {
+                                            <a class="student-home-lecture-link"
+                                               asp-action="Lecture"
+                                               asp-route-id="@lecture.Id"
+                                               aria-label="Открыть лекцию: @lecture.Title"
+                                               title="Открыть лекцию">
+                                                <span>↗</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="student-home-lock-label">Закрыта</span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        
+<div class="student-home-course-footer">
+    <span class="student-home-status @courseStatusClass">
+        <span class="student-home-footer-dot"></span>
+        @courseStatus
+    </span>
+</div>
+
+                    </article>
+                }
+            </div>
+        }
+    </section>
+
+    <footer class="student-home-footer">
+        <div class="student-home-footer-mark">✦</div>
+        <p>Большие результаты начинаются с одного шага.</p>
+        <span>ПРОДОЛЖАЙТЕ УЧИТЬСЯ</span>
+    </footer>
+
+</div>

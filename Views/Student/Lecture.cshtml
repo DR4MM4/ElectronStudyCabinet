@@ -1,0 +1,355 @@
+@model Lecture
+
+@{
+    ViewData["Title"] = Model.Title;
+
+    var progress = ViewBag.Progress as LectureProgress;
+    var attempts = ViewBag.Attempts as List<TestAttempt> ?? new List<TestAttempt>();
+
+    var controlPassed = progress?.ControlQuestionsPassed == true;
+    var testPassed = progress?.TestPassed == true;
+    var lectureCompleted = controlPassed && testPassed;
+}
+
+<div class="modern-lecture-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к дисциплинам
+    </a>
+
+    <header class="modern-lecture-hero">
+        <div class="modern-lecture-hero-content">
+            <span class="modern-lecture-eyebrow">
+                @(Model.Topic?.Course?.Title ?? "Учебная дисциплина")
+            </span>
+
+            <h1>@Model.Title</h1>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <p>@Model.Description</p>
+            }
+
+            <div class="modern-lecture-badges">
+                <span class="modern-lecture-badge">
+                    <span>▤</span> Теория
+                </span>
+                <span class="modern-lecture-badge">
+                    <span>✓</span> Практика
+                </span>
+                <span class="modern-lecture-badge">
+                    <span>◎</span> Проверка знаний
+                </span>
+            </div>
+        </div>
+
+        <div class="modern-lecture-hero-art" aria-hidden="true">
+            <div class="modern-lecture-orbit"></div>
+            <div class="modern-lecture-book">▤</div>
+            <div class="modern-lecture-star">✦</div>
+        </div>
+    </header>
+
+    <div class="modern-lecture-columns">
+
+        <main class="modern-lecture-main">
+
+            <article class="modern-learning-card">
+                <div class="modern-card-heading">
+                    <div class="modern-heading-icon">▤</div>
+                    <div>
+                        <span class="modern-card-eyebrow">ТЕОРИЯ</span>
+                        <h2>Теоретический материал</h2>
+                    </div>
+                </div>
+
+                <div class="modern-theory-content">@Model.Content</div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+                {
+                    <div class="modern-attachment">
+                        <div class="modern-attachment-icon">↗</div>
+                        <div class="modern-attachment-info">
+                            <strong>Дополнительный материал</strong>
+                            <span>Откройте прикреплённый файл</span>
+                        </div>
+                        <a href="@Model.FilePath"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            Открыть <span>↗</span>
+                        </a>
+                    </div>
+                }
+            </article>
+
+           
+@if (Model.ControlQuestions.Any())
+{
+    <section class="modern-assessment-card" id="control-questions">
+        <div class="modern-assessment-top">
+            <div class="modern-step-icon">01</div>
+            <div>
+                <span class="modern-card-eyebrow">ПЕРВЫЙ ЭТАП</span>
+                <h2>Контрольные вопросы</h2>
+                <p>Проверьте, насколько хорошо вы усвоили материал лекции.</p>
+            </div>
+        </div>
+
+        @if (controlPassed)
+        {
+            <div class="modern-completed-notice">
+                <span>✓</span>
+                Контрольные вопросы уже пройдены.
+            </div>
+        }
+        else
+        {
+            <form asp-action="SubmitControl" method="post">
+                <input type="hidden" name="lectureId" value="@Model.Id" />
+
+                @{
+                    var controlNumber = 0;
+                }
+
+                @foreach (var q in Model.ControlQuestions)
+                {
+                    controlNumber++;
+
+                    <div class="modern-question-block">
+                        <label for="control_@q.Id">
+                            <span class="modern-question-number">@controlNumber</span>
+                            <span>@q.Text</span>
+                        </label>
+
+                        <input id="control_@q.Id"
+                               class="modern-answer-input"
+                               name="answers[@q.Id]"
+                               type="text"
+                               required
+                               autocomplete="off"
+                               placeholder="Введите ваш ответ..." />
+                    </div>
+                }
+
+                <button class="modern-submit-button" type="submit">
+                    Проверить ответы <span>→</span>
+                </button>
+            </form>
+        }
+    </section>
+}
+
+
+            
+@if (Model.TestQuestions.Any())
+{
+    <section class="modern-assessment-card" id="knowledge-test">
+        <div class="modern-assessment-top">
+            <div class="modern-step-icon test-step-icon">02</div>
+            <div>
+                <span class="modern-card-eyebrow">ВТОРОЙ ЭТАП</span>
+                <h2>Проверочный тест</h2>
+                <p>Выберите один правильный вариант в каждом вопросе.</p>
+            </div>
+        </div>
+
+        <div class="modern-test-notice">
+            <span>◎</span>
+            Для прохождения необходимо набрать не менее <strong>70%</strong>.
+        </div>
+
+        @if (testPassed)
+        {
+            <div class="modern-completed-notice">
+                <span>✓</span>
+                Тест уже успешно пройден.
+            </div>
+        }
+        else if (controlPassed)
+        {
+            <form asp-action="SubmitTest" method="post">
+                <input type="hidden" name="lectureId" value="@Model.Id" />
+
+                @{
+                    var testNumber = 0;
+                }
+
+                @foreach (var q in Model.TestQuestions)
+                {
+                    testNumber++;
+
+                    <div class="modern-question-block modern-test-question">
+                        <p class="modern-test-question-title">
+                            <span class="modern-question-number">@testNumber</span>
+                            <span>@q.Text</span>
+                        </p>
+
+                        <div class="modern-options-list">
+                            @foreach (var option in q.Options)
+                            {
+                                <label class="modern-option-label">
+                                    <input type="radio"
+                                           name="answers[@q.Id]"
+                                           value="@option.Id"
+                                           required />
+
+                                    <span class="modern-option-marker"></span>
+                                    <span class="modern-option-text">@option.Text</span>
+                                </label>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <button class="modern-submit-button" type="submit">
+                    Завершить тест <span>→</span>
+                </button>
+            </form>
+        }
+        else
+        {
+            <div class="modern-completed-notice">
+                Сначала пройдите контрольные вопросы, чтобы открыть тест.
+            </div>
+        }
+    </section>
+}
+
+
+            @if (attempts.Any())
+            {
+                <section class="modern-assessment-card">
+                    <div class="modern-assessment-top">
+                        <div class="modern-step-icon history-step-icon">↻</div>
+                        <div>
+                            <span class="modern-card-eyebrow">ВАША АКТИВНОСТЬ</span>
+                            <h2>История попыток</h2>
+                            <p>Результаты ранее выполненных тестов.</p>
+                        </div>
+                    </div>
+
+                    <div class="modern-attempt-list">
+                        @foreach (var attempt in attempts)
+                        {
+                            <div class="modern-attempt-row">
+                                <div class="modern-attempt-date">
+                                    <span class="modern-attempt-date-icon">◷</span>
+                                    <span>
+                                        @attempt.AttemptedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")
+                                    </span>
+                                </div>
+
+                                <div class="modern-attempt-result">
+                                    <strong>@attempt.Percent%</strong>
+                                    <span>
+                                        @attempt.CorrectAnswers из @attempt.TotalQuestions
+                                    </span>
+                                </div>
+
+                                <span class="modern-attempt-status @(attempt.Passed ? "attempt-passed" : "attempt-failed")">
+                                    @(attempt.Passed ? "Пройден" : "Не пройден")
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
+
+        </main>
+
+        <aside class="modern-lecture-sidebar">
+            <section class="modern-sidebar-card">
+                <span class="modern-card-eyebrow">ВАШ ПРОГРЕСС</span>
+                <h2>Этапы обучения</h2>
+                <p class="modern-sidebar-description">
+                    Завершите оба этапа, чтобы открыть следующую лекцию.
+                </p>
+
+                <div class="modern-steps-list">
+                    <div class="modern-progress-step @(controlPassed ? "step-complete" : "")">
+                        <div class="modern-progress-marker">
+                            @(controlPassed ? "✓" : "1")
+                        </div>
+                        <div class="modern-progress-info">
+                            <strong>Контрольные вопросы</strong>
+                            <span>
+                                @(controlPassed ? "Успешно пройдены" : "Ответьте на вопросы")
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="modern-progress-connector @(controlPassed ? "connector-complete" : "")"></div>
+
+                    <div class="modern-progress-step @(testPassed ? "step-complete" : "")">
+                        <div class="modern-progress-marker">
+                            @(testPassed ? "✓" : "2")
+                        </div>
+                        <div class="modern-progress-info">
+                            <strong>Проверочный тест</strong>
+                            <span>
+                                @(testPassed ? "Успешно пройден" : "Наберите минимум 70%")
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="modern-progress-connector @(lectureCompleted ? "connector-complete" : "")"></div>
+
+                    <div class="modern-progress-step @(lectureCompleted ? "step-unlocked" : "")">
+                        <div class="modern-progress-marker">
+                            @(lectureCompleted ? "✓" : "3")
+                        </div>
+                        <div class="modern-progress-info">
+                            <strong>Следующая лекция</strong>
+                            <span>
+                                @(lectureCompleted ? "Предыдущие этапы выполнены" : "Пока заблокирована")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modern-sidebar-result @(lectureCompleted ? "result-success" : "")">
+                    <span>@(lectureCompleted ? "✓" : "◎")</span>
+                    <div>
+                        <strong>
+                            @(lectureCompleted ? "Отличная работа!" : "Продолжайте обучение")
+                        </strong>
+                        <p>
+                            @(lectureCompleted
+                                ? "Вы выполнили оба этапа этой лекции."
+                                : "Пройдите контрольные вопросы и тест.")
+                        </p>
+                    </div>
+                </div>
+                
+@{
+    var nextLecture = ViewBag.NextLecture as Lecture;
+}
+
+@if (lectureCompleted && nextLecture != null)
+{
+    <a class="modern-submit-button modern-next-lecture-button"
+       asp-action="Lecture"
+       asp-route-id="@nextLecture.Id">
+        Следующая лекция <span>→</span>
+    </a>
+}
+else if (lectureCompleted)
+{
+    <div class="modern-completed-notice">
+        ✓ Дисциплина завершена! Вы прошли все лекции.
+    </div>
+}
+
+            </section>
+
+            <section class="modern-sidebar-tip">
+                <div class="modern-tip-icon">✦</div>
+                <h3>Совет для обучения</h3>
+                <p>
+                    Внимательно изучите теорию перед проверкой знаний. Если ответ окажется неверным, вернитесь к материалу и повторите тему.
+                </p>
+            </section>
+        </aside>
+
+    </div>
+</div>

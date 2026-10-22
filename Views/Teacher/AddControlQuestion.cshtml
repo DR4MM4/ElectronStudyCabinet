@@ -1,0 +1,134 @@
+
+@model QuestionEditViewModel
+
+@{
+    ViewData["Title"] = "Контрольный вопрос";
+}
+
+<div class="modern-form-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к панели
+    </a>
+
+    <div class="modern-form-layout">
+
+        <div class="modern-form-main">
+            <div class="modern-form-card">
+
+                <div class="modern-form-heading">
+                    <div class="modern-form-icon">?</div>
+
+                    <div>
+                        <span class="modern-form-eyebrow">КОНТРОЛЬ ЗНАНИЙ</span>
+                        <h1>Добавить контрольный вопрос</h1>
+                        <p>Создайте вопрос, который поможет проверить понимание лекционного материала.</p>
+                    </div>
+                </div>
+
+                <div class="modern-question-notice">
+                    <span>ⓘ</span>
+                    <p>
+                        Ответ проверяется автоматически без учёта регистра
+                        и пробелов по краям.
+                    </p>
+                </div>
+
+                <form asp-action="AddControlQuestion" method="post">
+
+                    <input asp-for="LectureId" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="modern-validation-summary"></div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Text">Текст вопроса</label>
+
+                        <textarea asp-for="Text"
+                                  class="modern-form-textarea modern-question-textarea"
+                                  rows="5"
+                                  placeholder="Введите вопрос по материалу лекции..."></textarea>
+
+                        <span asp-validation-for="Text"
+                              class="modern-validation-message"></span>
+
+                        <small>
+                            Формулируйте вопрос понятно и однозначно, чтобы студент мог дать точный ответ.
+                        </small>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="CorrectAnswer">Правильный ответ</label>
+
+                        <input asp-for="CorrectAnswer"
+                               class="modern-form-input"
+                               placeholder="Введите правильный ответ" />
+
+                        <span asp-validation-for="CorrectAnswer"
+                              class="modern-validation-message"></span>
+
+                        <small>
+                            Введите ответ, с которым система будет сравнивать ответ студента.
+                        </small>
+                    </div>
+
+                    <div class="modern-form-actions">
+                        <a class="modern-form-cancel" asp-action="Index">
+                            Отмена
+                        </a>
+
+                        <button class="modern-form-submit" type="submit">
+                            <span>✓</span>
+                            Сохранить вопрос
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <aside class="modern-form-sidebar">
+            <div class="modern-form-info-card">
+
+                <div class="modern-info-icon">✦</div>
+
+                <span class="modern-form-eyebrow">СОВЕТЫ</span>
+
+                <h2>Хороший вопрос — хорошая проверка</h2>
+
+                <p>
+                    Контрольные вопросы помогают студентам закрепить основные
+                    понятия и проверить, насколько хорошо они усвоили тему.
+                </p>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-info-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Составьте вопрос</strong>
+                        <small>Опирайтесь на содержание лекции</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Укажите ответ</strong>
+                        <small>Используйте чёткую формулировку</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>03</span>
+                    <div>
+                        <strong>Проверьте результат</strong>
+                        <small>Убедитесь, что ответ сохраняется правильно</small>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+</div>

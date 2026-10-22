@@ -1,0 +1,79 @@
+﻿
+@model ElectronStudyCabinet.Models.TestQuestionEditViewModel
+
+@{
+    ViewData["Title"] = "Редактирование тестового вопроса";
+}
+
+<div class="modern-form-page">
+    <div class="modern-form-card">
+        <span class="eyebrow">УПРАВЛЕНИЕ ТЕСТАМИ</span>
+
+        <h1>Редактирование вопроса</h1>
+
+        <p class="muted">
+            Измени текст вопроса, варианты ответов и правильный ответ.
+        </p>
+
+        <form asp-action="EditTestQuestion" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="LectureId" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Text"></label>
+                <textarea asp-for="Text"
+                          class="form-control"
+                          rows="4"></textarea>
+                <span asp-validation-for="Text"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Option1"></label>
+                <input asp-for="Option1" class="form-control" />
+                <span asp-validation-for="Option1"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Option2"></label>
+                <input asp-for="Option2" class="form-control" />
+                <span asp-validation-for="Option2"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Option3"></label>
+                <input asp-for="Option3" class="form-control" />
+                <span asp-validation-for="Option3"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CorrectOption"></label>
+                <select asp-for="CorrectOption" class="form-control">
+                    <option value="1">Вариант №1</option>
+                    <option value="2">Вариант №2</option>
+                    <option value="3">Вариант №3</option>
+                </select>
+                <span asp-validation-for="CorrectOption"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn primary">
+                    Сохранить изменения
+                </button>
+
+                <a asp-action="Index" class="btn secondary">
+                    Отмена
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

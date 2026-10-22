@@ -1,0 +1,348 @@
+
+@model List<Course>
+
+@{
+    ViewData["Title"] = "Панель преподавателя";
+}
+
+<div class="teacher-dashboard">
+
+    <section class="teacher-welcome">
+        <div class="teacher-welcome-content">
+            <span class="teacher-eyebrow">РАБОЧЕЕ ПРОСТРАНСТВО</span>
+            <h1>Панель преподавателя</h1>
+            <p>Управляйте учебными дисциплинами, создавайте материалы и проверяйте результаты студентов.</p>
+
+            <a class="teacher-primary-button"
+               asp-action="CreateCourse">
+                <span>＋</span> Создать дисциплину
+            </a>
+        </div>
+
+        <div class="teacher-welcome-art" aria-hidden="true">
+            <div class="teacher-art-circle"></div>
+            <div class="teacher-art-document">
+                <span></span>
+                <span></span>
+                <span></span>
+                <b>✓</b>
+            </div>
+            <div class="teacher-art-check">✦</div>
+        </div>
+    </section>
+
+    <section class="teacher-stats">
+        <article class="teacher-stat-card">
+            <div class="teacher-stat-icon teacher-purple">▤</div>
+            <div>
+                <span>Дисциплины</span>
+                <strong>@ViewBag.CourseCount</strong>
+                <small>Учебные курсы</small>
+            </div>
+        </article>
+
+        <article class="teacher-stat-card">
+            <div class="teacher-stat-icon teacher-green">♙</div>
+            <div>
+                <span>Учётные записи</span>
+                <strong>@ViewBag.StudentCount</strong>
+                <small>Количество пользователей</small>
+            </div>
+        </article>
+
+        <article class="teacher-stat-card">
+            <div class="teacher-stat-icon teacher-orange">✓</div>
+            <div>
+                <span>Попытки тестов</span>
+                <strong>@ViewBag.AttemptCount</strong>
+                <small>Сохранённые результаты</small>
+            </div>
+        </article>
+    </section>
+
+    <section class="teacher-courses-section">
+        <div class="teacher-section-heading">
+            <div>
+                <span class="teacher-section-eyebrow">УЧЕБНЫЙ ПРОЦЕСС</span>
+                <h2>Учебные дисциплины</h2>
+                <p>Редактируйте содержание и наполняйте курсы новыми материалами.</p>
+            </div>
+
+            <a class="teacher-results-link" asp-action="Results">
+                Результаты студентов <span>↗</span>
+            </a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="teacher-empty-state">
+                <div class="teacher-empty-icon">▤</div>
+                <h3>Пока нет дисциплин</h3>
+                <p>Создайте первую дисциплину, чтобы начать наполнять учебный кабинет.</p>
+                <a class="teacher-primary-button" asp-action="CreateCourse">
+                    ＋ Создать дисциплину
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="teacher-course-grid">
+                @foreach (var course in Model)
+                {
+                    var topics = course.Topics.OrderBy(t => t.Order).ToList();
+                    var lectures = topics
+                        .SelectMany(t => t.Lectures.OrderBy(l => l.Order))
+                        .ToList();
+
+                    <article class="teacher-course-card">
+                        <div class="teacher-course-top">
+                            <div class="teacher-course-icon">▤</div>
+                            <span class="teacher-course-badge">УЧЕБНЫЙ КУРС</span>
+                            <div class="teacher-course-menu">
+                                <a asp-action="EditCourse"
+                                   asp-route-id="@course.Id"
+                                   title="Изменить дисциплину">✎</a>
+                            </div>
+                        </div>
+
+                        <h3>@course.Title</h3>
+
+                        <p class="teacher-course-description">
+                            @(string.IsNullOrWhiteSpace(course.Description)
+                                ? "Описание дисциплины пока не добавлено."
+                                : course.Description)
+                        </p>
+
+                        <div class="teacher-course-metrics">
+                            <div>
+                                <span class="teacher-metric-icon">▦</span>
+                                <span>Темы</span>
+                                <strong>@topics.Count</strong>
+                            </div>
+                            <div>
+                                <span class="teacher-metric-icon">▤</span>
+                                <span>Лекции</span>
+                                <strong>@lectures.Count</strong>
+                            </div>
+                        </div>
+
+                        <div class="teacher-content-heading">
+                            <span>Содержание курса</span>
+                            <span>@topics.Count тем</span>
+                        </div>
+
+                        @if (!topics.Any())
+                        {
+                            <div class="teacher-no-content">
+                                <span>ⓘ</span>
+                                Темы ещё не добавлены.
+                            </div>
+                        }
+                        else
+                        {
+                            @foreach (var topic in topics)
+                            {
+                                var topicLectures = topic.Lectures
+                                    .OrderBy(l => l.Order)
+                                    .ToList();
+
+                                <div class="teacher-topic">
+                                    <div class="teacher-topic-heading">
+                                        <div class="teacher-topic-title">
+                                            <span class="teacher-topic-number">@topic.Order</span>
+                                            <strong>@topic.Title</strong>
+                                        </div>
+                                        <span class="teacher-topic-count">
+                                            @topicLectures.Count лекц.
+                                        </span>
+                                        <a asp-action="EditTopic"
+   asp-route-id="@topic.Id"
+   title="Редактировать тему"
+   aria-label="Редактировать тему">
+    ✎
+</a>
+<form asp-action="DeleteTopic"
+      asp-route-id="@topic.Id"
+      method="post"
+      onsubmit="return confirm('Удалить тему вместе со всеми лекциями, вопросами и результатами студентов?')">
+
+    <button type="submit"
+            title="Удалить тему"
+            aria-label="Удалить тему">
+        ×
+    </button>
+</form>
+                                    </div>
+
+                                    @if (!topicLectures.Any())
+                                    {
+                                        <div class="teacher-topic-empty">
+                                            В этой теме пока нет лекций.
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var lecture in topicLectures)
+                                        {
+                                            <div class="teacher-lecture">
+                                                <div class="teacher-lecture-icon">▤</div>
+
+                                                <div class="teacher-lecture-info">
+                                                    <strong>@lecture.Title</strong>
+                                                    <span>
+                                                        @lecture.ControlQuestions.Count контрольных ·
+                                                        @lecture.TestQuestions.Count тестовых
+                                                    </span>
+                                                    @if (lecture.ControlQuestions.Any())
+{
+    <div class="teacher-question-list">
+        @foreach (var question in lecture.ControlQuestions)
+        {
+            <div class="teacher-question-row">
+                <span class="teacher-question-text">
+                    @question.Text
+                </span>
+
+                <a asp-action="EditControlQuestion"
+                   asp-route-id="@question.Id"
+                   title="Редактировать контрольный вопрос"
+                   aria-label="Редактировать контрольный вопрос">
+                    ✎
+                </a>
+                <form asp-action="DeleteControlQuestion"
+      asp-route-id="@question.Id"
+      method="post"
+      onsubmit="return confirm('Удалить этот контрольный вопрос?')">
+
+    <button type="submit"
+            title="Удалить вопрос"
+            aria-label="Удалить вопрос">
+        ×
+    </button>
+</form>
+
+
+@if (lecture.TestQuestions.Any())
+{
+    <div class="teacher-question-list">
+        @foreach (var testQuestion in lecture.TestQuestions)
+        {
+            <div class="teacher-question-row">
+                <span class="teacher-question-text">
+                    @testQuestion.Text
+                </span>
+
+                <div class="teacher-question-buttons">
+                    <a asp-action="EditTestQuestion"
+                       asp-route-id="@testQuestion.Id"
+                       title="Редактировать вопрос"
+                       aria-label="Редактировать вопрос">✎</a>
+
+                    <form asp-action="DeleteTestQuestion"
+                          asp-route-id="@testQuestion.Id"
+                          method="post"
+                          onsubmit="return confirm('Удалить этот тестовый вопрос?')">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                title="Удалить вопрос"
+                                aria-label="Удалить вопрос">×</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+            </div>
+        }
+    </div>
+
+}
+                                                </div>
+
+                                                <div class="teacher-lecture-actions">
+                                                    <a asp-action="AddControlQuestion"
+                                                       asp-route-lectureId="@lecture.Id"
+                                                       title="Добавить контрольный вопрос"
+                                                       aria-label="Добавить контрольный вопрос">
+                                                        К
+                                                    </a>
+                                                    <a asp-action="AddTestQuestion"
+                                                       asp-route-lectureId="@lecture.Id"
+                                                       title="Добавить вопрос теста"
+                                                       aria-label="Добавить вопрос теста">
+                                                        Т
+                                                    </a>
+                                                    <a asp-action="EditLecture"
+   asp-route-id="@lecture.Id"
+   title="Редактировать лекцию"
+   aria-label="Редактировать лекцию">
+    ✎
+</a>
+<form asp-action="DeleteLecture"
+      asp-route-id="@lecture.Id"
+      method="post"
+      onsubmit="return confirm('Удалить лекцию вместе с вопросами и результатами студентов?')">
+
+    <button type="submit"
+            title="Удалить лекцию"
+            aria-label="Удалить лекцию">
+        ×
+    </button>
+</form>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            }
+                        }
+
+                        <div class="teacher-course-footer">
+                            <a asp-action="CreateTopic"
+                               asp-route-courseId="@course.Id">
+                                <span>＋</span> Добавить тему
+                            </a>
+
+                            @if (topics.Any())
+{
+    <a asp-action="CreateLecture"
+       asp-route-topicId="@topics.First().Id"
+       class="teacher-add-lecture-link"
+       title="Добавить лекцию в первую тему">
+        ＋ Лекция
+    </a>
+}
+else
+{
+    <span class="teacher-add-lecture-link teacher-add-lecture-disabled"
+          title="Сначала добавьте тему">
+        ＋ Лекция
+    </span>
+}
+                        </div>
+
+                        <div class="teacher-course-bottom">
+                            <a asp-action="EditCourse"
+                               asp-route-id="@course.Id">
+                                <span>✎</span> Изменить дисциплину
+                            </a>
+
+                            <form asp-action="DeleteCourse"
+                                  asp-route-id="@course.Id"
+                                  method="post"
+                                  onsubmit="return confirm('Удалить дисциплину вместе с темами и лекциями?')">
+                                <button type="submit">
+                                    <span>⌫</span> Удалить
+                                </button>
+                            </form>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+</div>

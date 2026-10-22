@@ -1,0 +1,111 @@
+
+@model CourseEditViewModel
+
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Новая дисциплина" : "Изменение дисциплины";
+    var isNew = Model.Id == 0;
+}
+
+<div class="modern-form-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к дисциплинам
+    </a>
+
+    <div class="modern-form-layout">
+
+        <div class="modern-form-main">
+            <div class="modern-form-card">
+
+                <div class="modern-form-heading">
+                    <div class="modern-form-icon">▤</div>
+                    <div>
+                        <span class="modern-form-eyebrow">УЧЕБНАЯ ПРОГРАММА</span>
+                        <h1>@ViewData["Title"]</h1>
+                        <p>
+                            @(isNew
+                                ? "Создайте новую дисциплину и заполните основные сведения."
+                                : "Измените название или описание существующей дисциплины.")
+                        </p>
+                    </div>
+                </div>
+
+                <form asp-action="@(isNew ? "CreateCourse" : "EditCourse")" method="post">
+                    <input asp-for="Id" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly" class="modern-validation-summary"></div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Title">Название дисциплины</label>
+                        <input asp-for="Title"
+                               class="modern-form-input"
+                               placeholder="Например, Тестирование программного обеспечения" />
+                        <span asp-validation-for="Title" class="modern-validation-message"></span>
+                        <small>Укажите понятное название учебного курса.</small>
+                    </div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Description">Описание дисциплины</label>
+                        <textarea asp-for="Description"
+                                  class="modern-form-textarea"
+                                  rows="5"
+                                  placeholder="Кратко расскажите, чему посвящена дисциплина и что изучат студенты."></textarea>
+                        <span asp-validation-for="Description" class="modern-validation-message"></span>
+                        <small>Опишите основные темы и цели обучения.</small>
+                    </div>
+
+                    <div class="modern-form-actions">
+                        <a class="modern-form-cancel" asp-action="Index">Отмена</a>
+
+                        <button class="modern-form-submit" type="submit">
+                            <span>✓</span>
+                            Сохранить дисциплину
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <aside class="modern-form-sidebar">
+            <div class="modern-form-info-card">
+                <div class="modern-info-icon">✦</div>
+                <span class="modern-form-eyebrow">ПОЛЕЗНО ЗНАТЬ</span>
+                <h2>Создайте основу курса</h2>
+                <p>
+                    После создания дисциплины вы сможете добавлять темы, лекции,
+                    контрольные вопросы и проверочные тесты.
+                </p>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-info-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Дисциплина</strong>
+                        <small>Название и описание курса</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Темы и лекции</strong>
+                        <small>Учебные материалы по порядку</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>03</span>
+                    <div>
+                        <strong>Проверка знаний</strong>
+                        <small>Вопросы и тестирование студентов</small>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</div>
+
+

@@ -1,0 +1,202 @@
+
+@model TestQuestionEditViewModel
+
+@{
+    ViewData["Title"] = "Вопрос теста";
+}
+
+<div class="modern-form-page">
+
+    <a class="modern-back-link" asp-action="Index">
+        <span>←</span> Назад к панели
+    </a>
+
+    <div class="modern-form-layout">
+
+        <div class="modern-form-main">
+            <div class="modern-form-card">
+
+                <div class="modern-form-heading">
+                    <div class="modern-form-icon">✓</div>
+
+                    <div>
+                        <span class="modern-form-eyebrow">ТЕСТИРОВАНИЕ</span>
+                        <h1>Добавить вопрос теста</h1>
+                        <p>Составьте вопрос и три варианта ответа для проверки знаний студентов.</p>
+                    </div>
+                </div>
+
+                <form asp-action="AddTestQuestion" method="post">
+
+                    <input asp-for="LectureId" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="modern-validation-summary"></div>
+
+                    <div class="modern-form-field">
+                        <label asp-for="Text">Текст вопроса</label>
+
+                        <textarea asp-for="Text"
+                                  class="modern-form-textarea modern-question-textarea"
+                                  rows="4"
+                                  placeholder="Введите вопрос теста..."></textarea>
+
+                        <span asp-validation-for="Text"
+                              class="modern-validation-message"></span>
+
+                        <small>
+                            Сформулируйте вопрос так, чтобы студент понимал, что именно нужно выбрать.
+                        </small>
+                    </div>
+
+                    <div class="modern-options-heading">
+                        <div>
+                            <h2>Варианты ответа</h2>
+                            <p>Заполните все три варианта.</p>
+                        </div>
+
+                        <span class="modern-options-count">3 варианта</span>
+                    </div>
+
+                    <div class="modern-option-field">
+                        <div class="modern-option-letter">A</div>
+
+                        <div class="modern-option-input">
+                            <label asp-for="OptionA">Вариант A</label>
+
+                            <input asp-for="OptionA"
+                                   class="modern-form-input"
+                                   placeholder="Введите первый вариант" />
+
+                            <span asp-validation-for="OptionA"
+                                  class="modern-validation-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="modern-option-field">
+                        <div class="modern-option-letter">B</div>
+
+                        <div class="modern-option-input">
+                            <label asp-for="OptionB">Вариант B</label>
+
+                            <input asp-for="OptionB"
+                                   class="modern-form-input"
+                                   placeholder="Введите второй вариант" />
+
+                            <span asp-validation-for="OptionB"
+                                  class="modern-validation-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="modern-option-field">
+                        <div class="modern-option-letter">C</div>
+
+                        <div class="modern-option-input">
+                            <label asp-for="OptionC">Вариант C</label>
+
+                            <input asp-for="OptionC"
+                                   class="modern-form-input"
+                                   placeholder="Введите третий вариант" />
+
+                            <span asp-validation-for="OptionC"
+                                  class="modern-validation-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="modern-form-field modern-correct-answer">
+                        <label asp-for="CorrectOption">Правильный ответ</label>
+
+                        <select asp-for="CorrectOption" class="modern-form-input">
+                            <option value="1">A — первый вариант</option>
+                            <option value="2">B — второй вариант</option>
+                            <option value="3">C — третий вариант</option>
+                        </select>
+
+                        <span asp-validation-for="CorrectOption"
+                              class="modern-validation-message"></span>
+
+                        <small>
+                            Выберите вариант, который будет считаться правильным при проверке теста.
+                        </small>
+                    </div>
+
+                    <div class="modern-form-actions">
+                        <a class="modern-form-cancel" asp-action="Index">
+                            Отмена
+                        </a>
+
+                        <button class="modern-form-submit" type="submit">
+                            <span>✓</span>
+                            Сохранить вопрос
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <aside class="modern-form-sidebar">
+            <div class="modern-form-info-card">
+
+                <div class="modern-info-icon">✦</div>
+
+                <span class="modern-form-eyebrow">СОВЕТЫ</span>
+
+                <h2>Подготовьте качественный тест</h2>
+
+                <p>
+                    Тесты помогают быстро оценить знания студентов и определить,
+                    какие темы требуют дополнительного изучения.
+                </p>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-info-step">
+                    <span>01</span>
+                    <div>
+                        <strong>Сформулируйте вопрос</strong>
+                        <small>Проверяйте конкретное знание</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>02</span>
+                    <div>
+                        <strong>Добавьте варианты</strong>
+                        <small>Сделайте ответы понятными</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-step">
+                    <span>03</span>
+                    <div>
+                        <strong>Укажите правильный</strong>
+                        <small>Проверьте выбранную букву</small>
+                    </div>
+                </div>
+
+                <div class="modern-info-divider"></div>
+
+                <div class="modern-test-example">
+                    <span class="modern-form-eyebrow">ПРИМЕР</span>
+                    <p>Какой вариант является правильным?</p>
+
+                    <div class="modern-example-option">
+                        <span>A</span> Первый вариант ответа
+                    </div>
+
+                    <div class="modern-example-option modern-example-correct">
+                        <span>B</span> Правильный вариант
+                        <b>✓</b>
+                    </div>
+
+                    <div class="modern-example-option">
+                        <span>C</span> Третий вариант ответа
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+</div>
